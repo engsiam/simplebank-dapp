@@ -13,13 +13,13 @@ export function Footer() {
           </div>
           
           <div className="flex items-center gap-6 text-sm text-gray-500">
-            <a href="#" className="hover:text-white transition-colors">Docs</a>
-            <a href="#" className="hover:text-white transition-colors">Support</a>
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
+            <span className="hover:text-white transition-colors">Docs</span>
+            <span className="hover:text-white transition-colors">Support</span>
+            <span className="hover:text-white transition-colors">Terms</span>
           </div>
 
           <div className="text-sm text-gray-500">
-            © {new Date().getFullYear()} SimpleBank
+            © 2026 SimpleBank
           </div>
         </div>
       </div>

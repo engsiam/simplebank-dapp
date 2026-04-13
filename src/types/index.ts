@@ -42,3 +42,15 @@ export function isEthersError(error: unknown): error is EthersError {
 }
 
 export type ContractStore = ContractState & ContractActions;
+
+export type WalletErrorCode = 
+  | 4001 
+  | 'INSUFFICIENT_FUNDS' 
+  | 'NETWORK_ERROR' 
+  | 'TIMEOUT' 
+  | 'UNKNOWN';
+
+export interface WalletError {
+  code: WalletErrorCode;
+  message: string;
+}

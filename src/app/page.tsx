@@ -3,18 +3,21 @@
 import { useEffect } from 'react';
 import { useWallet } from '@/hooks/useWallet';
 import { useContract } from '@/hooks/useContract';
-import { ConnectButton } from '@/components/wallet/ConnectButton';
-import { WalletInfo } from '@/components/wallet/WalletInfo';
+import { WalletButton } from '@/components/wallet/WalletButton';
+import { WalletStatus } from '@/components/wallet/WalletStatus';
 import { DepositForm } from '@/components/bank/DepositForm';
 import { WithdrawForm } from '@/components/bank/WithdrawForm';
 import { BalanceCard } from '@/components/bank/BalanceCard';
 import { Web3Layout } from '@/components/layout/Web3Layout';
 import { DashboardCard } from '@/components/layout/DashboardCard';
+import { useMounted } from '@/hooks/useMounted';
 import toast from 'react-hot-toast';
 
 export default function Home() {
-  const { address, isConnected, isCorrectNetwork } = useWallet();
+  const { address, isConnected, chainId } = useWallet();
+  const isCorrectNetwork = chainId === '0xaa36a7';
   const { contractBalance, userBalance, isLoading, fetchBalances, deposit, withdraw } = useContract(address);
+  const mounted = useMounted();
 
   useEffect(() => {
     if (isConnected && isCorrectNetwork) {
@@ -44,8 +47,19 @@ export default function Home() {
     }
   };
 
+  if (!mounted) {
+    return (
+      <Web3Layout navbarActions={null}>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+          <p className="text-gray-400 mt-1">Manage your ETH deposits and withdrawals</p>
+        </div>
+      </Web3Layout>
+    );
+  }
+
   return (
-    <Web3Layout navbarActions={<><ConnectButton /><WalletInfo /></>}>
+    <Web3Layout navbarActions={<><WalletButton /><WalletStatus /></>}>
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-white">Dashboard</h1>
         <p className="text-gray-400 mt-1">Manage your ETH deposits and withdrawals</p>
@@ -64,7 +78,7 @@ export default function Home() {
               Connect your MetaMask wallet to deposit and withdraw ETH on the Sepolia testnet.
             </p>
             <div className="flex justify-center">
-              <ConnectButton />
+              <WalletButton />
             </div>
           </DashboardCard>
         </div>
