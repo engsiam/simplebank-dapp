@@ -8,8 +8,10 @@ const ABI = [
   'function withdraw(uint256 amount)',
   'function balances(address) view returns (uint256)',
   'function getContractBalance() view returns (uint256)',
-  'event Deposit(address indexed user, uint256 amount)',
-  'event Withdrawal(address indexed user, uint256 amount)'
+
+  // ✅ EVENTS (NEW)
+  'event Deposit(address indexed user, uint256 amount, uint256 timestamp)',
+  'event Withdrawal(address indexed user, uint256 amount, uint256 timestamp)',
 ] as const;
 
 export async function getContract(): Promise<Contract> {
