@@ -4,6 +4,12 @@ A modern **decentralized banking application (dApp)** built using **Next.js, Tai
 
 ---
 
+## 🎨 Frontend Preview
+
+![SimpleBank UI](https://i.ibb.co/wZqLn7RQ/n-Gz-QL2-Gt-TJWe9lvl-Bj1yug.png)
+
+---
+
 ## 🚀 Features
 
 - 🔐 Connect wallet via MetaMask  
@@ -24,12 +30,6 @@ A modern **decentralized banking application (dApp)** built using **Next.js, Tai
 - **Library:** Ethers.js v6  
 - **Wallet:** MetaMask  
 - **Network:** Sepolia Testnet  
-
----
-
-## 🎨 Frontend Preview
-
-[![SimpleBank UI](https://i.ibb.co.com/wZqLn7RQ/n-Gz-QL2-Gt-TJWe9lvl-Bj1yug.png)](https://i.ibb.co.com/wZqLn7RQ/n-Gz-QL2-Gt-TJWe9lvl-Bj1yug.png)
 
 ---
 
