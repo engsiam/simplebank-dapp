@@ -1,6 +1,7 @@
 import { Contract, parseEther, formatEther } from 'ethers';
 import { getSigner } from './ethers';
 import { CONTRACT_ADDRESS } from '@/constants/config';
+import { parseEthersError } from './errorHandler';
 
 const ABI = [
   'function deposit() payable',
@@ -13,42 +14,81 @@ const ABI = [
 
 let contractInstance: Contract | null = null;
 
+// ✅ Get Contract Instance (cached)
 export async function getContract(): Promise<Contract> {
-  if (contractInstance) {
-    return contractInstance;
-  }
+  if (contractInstance) return contractInstance;
 
   const signer = await getSigner();
   const contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
-  
+
   contractInstance = contract;
   return contract;
 }
 
+// ✅ Deposit ETH
 export async function deposit(amount: string): Promise<void> {
-  const contract = await getContract();
-  const value = parseEther(amount);
-  const tx = await contract.deposit({ value });
-  await tx.wait();
+  try {
+    if (!amount || Number(amount) <= 0) {
+      throw new Error('Invalid amount');
+    }
+
+    const contract = await getContract();
+    const value = parseEther(amount);
+
+    const tx = await contract.deposit({ value });
+    await tx.wait();
+
+  } catch (error: unknown) {
+    throw new Error(parseEthersError(error));
+  }
 }
 
+// ✅ Withdraw ETH
 export async function withdraw(amount: string): Promise<void> {
-  const contract = await getContract();
-  const value = parseEther(amount);
-  const tx = await contract.withdraw(value);
-  await tx.wait();
+  try {
+    if (!amount || Number(amount) <= 0) {
+      throw new Error('Invalid amount');
+    }
+
+    const contract = await getContract();
+    const value = parseEther(amount);
+
+    const tx = await contract.withdraw(value);
+    await tx.wait();
+
+  } catch (error: unknown) {
+    throw new Error(parseEthersError(error));
+  }
 }
 
+// ✅ Get User Balance
 export async function getUserBalance(userAddress: string): Promise<string> {
-  const contract = await getContract();
-  const balance = await contract.balances(userAddress);
-  return formatEther(balance);
+  try {
+    if (!userAddress) return '0';
+
+    const contract = await getContract();
+    const balance = await contract.balances(userAddress);
+
+    return formatEther(balance);
+
+  } catch (error) {
+    console.error('getUserBalance error:', error);
+    return '0';
+  }
 }
 
+// ✅ Get Contract Balance
 export async function getContractBalance(): Promise<string> {
-  const contract = await getContract();
-  const balance = await contract.getContractBalance();
-  return formatEther(balance);
+  try {
+    const contract = await getContract();
+    const balance = await contract.getContractBalance();
+
+    return formatEther(balance);
+
+  } catch (error) {
+    console.error('getContractBalance error:', error);
+    return '0';
+  }
 }
 
 export type { ABI };

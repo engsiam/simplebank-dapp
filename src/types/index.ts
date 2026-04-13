@@ -28,4 +28,17 @@ export interface ContractActions {
   setIsLoading: (isLoading: boolean) => void;
 }
 
+export interface EthersError {
+  code?: number | string;
+  message?: string;
+  reason?: string;
+  shortMessage?: string;
+  data?: {
+    message?: string;
+  };
+}
+export function isEthersError(error: unknown): error is EthersError {
+  return typeof error === 'object' && error !== null;
+}
+
 export type ContractStore = ContractState & ContractActions;
