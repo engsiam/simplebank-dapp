@@ -19,7 +19,7 @@ export function Footer() {
           </div>
 
           <div className="text-sm text-gray-500">
-            © 2026 SimpleBank
+            © {new Date().getFullYear()} SimpleBank
           </div>
         </div>
       </div>
