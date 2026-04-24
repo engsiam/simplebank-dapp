@@ -30,13 +30,14 @@ async function getContract(): Promise<Contract> {
 }
 
 //
-// 🔥 FETCH TRANSACTIONS (FIXED + OPTIMIZED)
+// 🔥 FETCH TRANSACTIONS
 //
 export async function fetchTransactionEvents(
   userAddress?: string
 ): Promise<Transaction[]> {
   try {
     if (typeof window === 'undefined' || !window.ethereum) {
+      console.log('No window.ethereum');
       return [];
     }
 
@@ -46,16 +47,18 @@ export async function fetchTransactionEvents(
     const provider = new BrowserProvider(window.ethereum);
 
     const latestBlock = await provider.getBlockNumber();
-    const fromBlock = Math.max(latestBlock - 5000, 0);
+    const fromBlock = Math.max(latestBlock - 100000, 0);
+    console.log('Fetching from block', fromBlock, 'to', latestBlock);
 
     const depositFilter = contract.filters.Deposit();
     const withdrawalFilter = contract.filters.Withdrawal();
 
+    console.log('Querying events...');
     const [depositEvents, withdrawalEvents] = await Promise.all([
       contract.queryFilter(depositFilter, fromBlock, latestBlock),
       contract.queryFilter(withdrawalFilter, fromBlock, latestBlock),
     ]);
-console.log('depositEvents:', depositEvents);
+    console.log('depositEvents:', depositEvents.length, 'withdrawalEvents:', withdrawalEvents.length);
     const transactions: Transaction[] = [];
 
     //
